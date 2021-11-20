@@ -1,6 +1,8 @@
 // ....Global Element environmantel Setup ..........................
 window.saveDataAcrossSessions = true 
 // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
 //.....All Element Selection & programization...........
 const LEFT_CUTOFF = window.innerWidth / 4
 const RIGHT_CUTOFF = window.innerWidth - window.innerWidth / 4
@@ -17,8 +19,12 @@ var nextimageElement = getimageElement(true)
 
 // .....All EventListener go undernith here...........
 webgazer.setGazeListener((data,timestamp)=>{
+  // First step is to avoid null and stop
   if(data == null || lookingDirection == 'STOP') return
+  //  ................................................
 
+
+  //  Second step is makeing some conditions to take an action
   if(data.x < LEFT_CUTOFF && lookingDirection !== 'LEFT' && lookingDirection !== 'RESET'){
      startLookTime = timestamp
      lookingDirection = "LEFT"
@@ -29,16 +35,22 @@ webgazer.setGazeListener((data,timestamp)=>{
     startLookTime = Number.POSITIVE_INFINITY
     lookingDirection = null
   }
+  // ........................................................
 
   
-
+// if the main condition is true this code will run below
   if(startLookTime + lookDelay < timestamp){
+// ....................................................
+
+// if minor condition is true this code will run
     if(lookingDirection == 'LEFT'){
       imageElement.classList.add('left')
     } else{
       imageElement.classList.add('right')
     }
+// ....................................................
 
+// After runing the code above. the code below will reset all code once again
     startLookTime = Number.POSITIVE_INFINITY
     lookingDirection = 'STOP'
     setTimeout(()=>{
@@ -48,19 +60,9 @@ webgazer.setGazeListener((data,timestamp)=>{
       nextimageElement = getimageElement(true)
       lookingDirection = 'RESET'
     },200)
-
-  //   // startLookTime = Number.POSITIVE_INFINITY
-  //   // lookingDirection = 'STOP'
-  //   // setTimeout(()=>{
-  //   //   imageElement.remove()
-  //   //   nextimageElement.classList.remove('next')
-  //   //   imageElement = nextimageElement
-  //   //   nextimageElement = getimageElement(true)
-  //   //   lookingDirection = 'RESET'
-  //   // }, 200)
-  // }
-
+    // ..............................................................................
   }
+
 }).begin()
 // :::::::::::::::::::::::::::::::::::::::::::::::::::
 // ......All Function will go here undernith.........................
@@ -73,17 +75,3 @@ function getimageElement(next = false){
 }
 // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-
-
-
-
-//All code will be deleted here.............
-function printOut(text){
-    const div = document.createElement('div')
-    div.innerHTML = text
-    document.body.appendChild(div)
-}
-// addEventListener('click',()=>{
-//     alert("this is working")
-// })
-// :::::::::::::::::::::::::::::::::::::::::
